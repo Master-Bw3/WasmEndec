@@ -4,13 +4,7 @@ import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
 import com.mojang.datafixers.util.Either;
 import com.mojang.datafixers.util.Function3;
-import com.mojang.datafixers.util.Pair;
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.DataResult;
-import com.mojang.serialization.DynamicOps;
 import io.wispforest.endec.*;
-import io.wispforest.endec.format.edm.EdmSerializer;
-import io.wispforest.endec.format.edm.LenientEdmDeserializer;
 import io.wispforest.endec.impl.StructEndecBuilder;
 
 import java.util.*;
@@ -38,8 +32,8 @@ public class EndecTomfoolery {
     public record Vector<T extends Number>(T x, T y, T z) {}
 
 
-    public static final Endec<Vector<Double>> ALWAYS_READABLE_BLOCK_POS =
-            vectorEndec(Endec.DOUBLE, Vector::new, Vector::x, Vector::y, Vector::z);
+    public static final Endec<Vector<Integer>> ALWAYS_READABLE_BLOCK_POS =
+            vectorEndec(Endec.INT, Vector::new, Vector::x, Vector::y, Vector::z);
 
     public static final Endec<UUID> UUID = Endec.STRING.xmap(UndashedUuid::fromStringLenient, java.util.UUID::toString);
     public static final SerializationAttribute.Marker UBER_COMPACT_ATTRIBUTE = SerializationAttribute.marker("uber_compact");
