@@ -12,7 +12,9 @@ import org.teavm.jso.JSExportClasses;
 @JSExportClasses({Fragment.class, SpellPart.class, Pattern.class, PatternGlyph.class, Pattern.PatternEntry.class})
 public class TricksterEndec {
     public static void main(String[] args) {
-        SpellPart.fromBase64("YwqT9+ZnYGBgYGTMYWBgYGaEsBlhwqNio2JDUWwDR0MrAwMDE1hsmJEAVqVUkLQDAAA=");
+        var part = SpellPart.fromBase64("YwqT9+ZnYGBgYGTMYWBgYGaEsBlhwqNio2JDUWwDR0MrAwMDE1hsmJEAVqVUkLQDAAA=");
+
+        System.out.println(part.toBase64());
     }
 
     @JSExport

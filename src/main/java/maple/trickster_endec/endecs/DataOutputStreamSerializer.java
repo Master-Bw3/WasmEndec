@@ -7,52 +7,78 @@ import io.wispforest.endec.SerializationContext;
 import io.wispforest.endec.Serializer;
 import io.wispforest.endec.util.VarInts;
 
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 
-public class ByteBufferSerializer<B extends ByteBuffer> implements Serializer<B> {
+public class DataOutputStreamSerializer<B extends DataOutputStream> implements Serializer<B> {
 
-    private final B buffer;
+    private final B stream;
 
-    protected ByteBufferSerializer(B buffer) {
-        this.buffer = buffer;
+    protected DataOutputStreamSerializer(B buffer) {
+        this.stream = buffer;
     }
 
-    public static <B extends ByteBuffer> ByteBufferSerializer<B> of(B buffer) {
-        return new ByteBufferSerializer<>(buffer);
+    public static <B extends DataOutputStream> DataOutputStreamSerializer<B> of(B stream) {
+        return new DataOutputStreamSerializer<>(stream);
     }
 
     // ---
 
     @Override
     public void writeByte(SerializationContext ctx, byte value) {
-        this.buffer.put(value);
+        try {
+            this.stream.write(value);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     public void writeShort(SerializationContext ctx, short value) {
-        this.buffer.putShort(value);
+        try {
+            this.stream.writeShort(value);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     public void writeInt(SerializationContext ctx, int value) {
-        this.buffer.putInt(value);
+        try {
+            this.stream.writeInt(value);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     public void writeLong(SerializationContext ctx, long value) {
-        this.buffer.putLong(value);
+        try {
+            this.stream.writeLong(value);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     public void writeFloat(SerializationContext ctx, float value) {
-        this.buffer.putFloat(value);
+        try {
+            this.stream.writeFloat(value);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     public void writeDouble(SerializationContext ctx, double value) {
-        this.buffer.putDouble(value);
+        try {
+            this.stream.writeDouble(value);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     // ---
@@ -71,7 +97,11 @@ public class ByteBufferSerializer<B extends ByteBuffer> implements Serializer<B>
 
     @Override
     public void writeBoolean(SerializationContext ctx, boolean value) {
-        this.buffer.put(value ? (byte) 1 : (byte) 0);
+        try {
+            this.stream.writeBoolean(value);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -79,13 +109,21 @@ public class ByteBufferSerializer<B extends ByteBuffer> implements Serializer<B>
         this.writeVarInt(ctx, ByteBufUtil.utf8Bytes(value));
 
         byte[] bytes = value.getBytes(StandardCharsets.UTF_8);
-        this.buffer.put(bytes);
+        try {
+            this.stream.write(bytes);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     public void writeBytes(SerializationContext ctx, byte[] bytes) {
         this.writeVarInt(ctx, bytes.length);
-        this.buffer.put(bytes);
+        try {
+            this.stream.write(bytes);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -117,7 +155,7 @@ public class ByteBufferSerializer<B extends ByteBuffer> implements Serializer<B>
 
     @Override
     public B result() {
-        return this.buffer;
+        return this.stream;
     }
 
     // ---
@@ -134,18 +172,18 @@ public class ByteBufferSerializer<B extends ByteBuffer> implements Serializer<B>
 
         @Override
         public void element(V element) {
-            this.valueEndec.encode(this.ctx, ByteBufferSerializer.this, element);
+            this.valueEndec.encode(this.ctx, DataOutputStreamSerializer.this, element);
         }
 
         @Override
         public void entry(String key, V value) {
-            ByteBufferSerializer.this.writeString(this.ctx, key);
-            this.valueEndec.encode(this.ctx, ByteBufferSerializer.this, value);
+            DataOutputStreamSerializer.this.writeString(this.ctx, key);
+            this.valueEndec.encode(this.ctx, DataOutputStreamSerializer.this, value);
         }
 
         @Override
         public <F> Struct field(String name, SerializationContext ctx, Endec<F> endec, F value, boolean mayOmit) {
-            endec.encode(ctx, ByteBufferSerializer.this, value);
+            endec.encode(ctx, DataOutputStreamSerializer.this, value);
             return this;
         }
 

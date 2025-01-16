@@ -1,15 +1,12 @@
 package maple.trickster_endec.fragment;
 
 
-import io.netty.buffer.Unpooled;
 import io.wispforest.endec.SerializationContext;
 import io.wispforest.endec.StructEndec;
-import io.wispforest.endec.format.bytebuf.ByteBufDeserializer;
-import io.wispforest.endec.format.bytebuf.ByteBufSerializer;
 import io.wispforest.endec.impl.StructEndecBuilder;
 import maple.trickster_endec.SpellUtils;
 import maple.trickster_endec.endecs.ByteBufferDeserializer;
-import maple.trickster_endec.endecs.ByteBufferSerializer;
+import maple.trickster_endec.endecs.DataOutputStreamSerializer;
 import maple.trickster_endec.endecs.EndecTomfoolery;
 import maple.trickster_endec.spell_instruction.SpellInstruction;
 import org.apache.commons.lang3.ArrayUtils;
@@ -17,9 +14,7 @@ import org.teavm.jso.JSExport;
 import org.teavm.jso.JSProperty;
 import org.teavm.jso.core.JSArray;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.nio.ByteBuffer;
 import java.util.*;
 import java.util.zip.GZIPInputStream;
@@ -93,22 +88,29 @@ public final class SpellPart implements Fragment {
     }
 
     public String toBase64() {
-        var buf = ByteBuffer.allocate(255);
-        buf.put((byte) 2); // Protocol version
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        DataOutputStream outputStream = new DataOutputStream(byteArrayOutputStream);
+        try {
+            outputStream.write((byte) 2); // Protocol version
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         ENDEC.encode(
                 SerializationContext.empty().withAttributes(EndecTomfoolery.UBER_COMPACT_ATTRIBUTE),
-                ByteBufferSerializer.of(buf), this
+                DataOutputStreamSerializer.of(outputStream), this
         );
 
-        try (ByteArrayOutputStream byteStream = new ByteArrayOutputStream(buf.remaining())) {
-            try (GZIPOutputStream zipStream = new GZIPOutputStream(byteStream)) {
-                while (buf.hasRemaining()) {
-                    zipStream.write(buf.get());
-                }
+        try {
+            var out = new ByteArrayOutputStream(outputStream.size());
+            try (GZIPOutputStream zipStream = new GZIPOutputStream(out)) {
+                zipStream.write(byteArrayOutputStream.toByteArray());
+                outputStream.close();
+                byteArrayOutputStream.close();
+
                 zipStream.finish();
             }
 
-            byte[] bytes = byteStream.toByteArray();
+            byte[] bytes = out.toByteArray();
             String result;
 
             try {
@@ -126,12 +128,13 @@ public final class SpellPart implements Fragment {
     private static final byte[] base64Header = new byte[]{0x1f, (byte) 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, (byte) 0xff};
 
     public static SpellPart fromBase64(String string) {
-        var buf = ByteBuffer.allocate(255);
+        ByteBuffer buf;
 
         var byteStream = new ByteArrayInputStream(ArrayUtils.addAll(base64Header, Base64.getDecoder().decode(string.strip())));
         try (byteStream) {
             try (GZIPInputStream zipStream = new GZIPInputStream(byteStream)) {
-                buf.put(zipStream.readAllBytes());
+                var bytes = zipStream.readAllBytes();
+                buf = ByteBuffer.wrap(bytes, 0, bytes.length);
             }
         } catch (IOException e) {
             throw new RuntimeException("Spell decoding broke. what.");
