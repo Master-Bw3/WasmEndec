@@ -1,5 +1,9 @@
 package maple.trickster_endec.fragment;
 
+import io.wispforest.endec.Endec;
+import io.wispforest.endec.StructEndec;
+import io.wispforest.endec.impl.StructEndecBuilder;
+
 public class BooleanFragment implements Fragment {
     public static final StructEndec<BooleanFragment> ENDEC = StructEndecBuilder.of(
             Endec.BOOLEAN.fieldOf("bool", BooleanFragment::asBoolean),
@@ -19,12 +23,6 @@ public class BooleanFragment implements Fragment {
         return FragmentType.BOOLEAN;
     }
 
-    @Override
-    public Text asText() {
-        return Text.literal("" + bool);
-    }
-
-    @Override
     public boolean asBoolean() {
         return bool;
     }
@@ -46,10 +44,5 @@ public class BooleanFragment implements Fragment {
 
     public static BooleanFragment of(boolean bool) {
         return bool ? TRUE : FALSE;
-    }
-
-    @Override
-    public int getWeight() {
-        return 1;
     }
 }

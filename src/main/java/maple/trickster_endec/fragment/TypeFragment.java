@@ -1,28 +1,18 @@
 package maple.trickster_endec.fragment;
 
-public record TypeFragment(FragmentType<?> typeType) implements Fragment {
+import io.wispforest.endec.StructEndec;
+import io.wispforest.endec.impl.StructEndecBuilder;
+import maple.trickster_endec.Identifier;
+import maple.trickster_endec.endecs.EndecTomfoolery;
+
+public record TypeFragment(FragmentType<Fragment> typeType) implements Fragment {
     public static final StructEndec<TypeFragment> ENDEC = EndecTomfoolery.lazy(() -> StructEndecBuilder.of(
-            MinecraftEndecs.ofRegistry(FragmentType.REGISTRY).fieldOf("of_type", TypeFragment::typeType),
+            Identifier.ENDEC.xmap((x) -> (FragmentType<Fragment>) FragmentType.REGISTRY.get(x), FragmentType::getID).fieldOf("of_type", TypeFragment::typeType),
             TypeFragment::new
     ));
 
     @Override
     public FragmentType<?> type() {
         return FragmentType.TYPE;
-    }
-
-    @Override
-    public Text asText() {
-        return typeType.getName();
-    }
-
-    @Override
-    public boolean asBoolean() {
-        return true;
-    }
-
-    @Override
-    public int getWeight() {
-        return 16;
     }
 }

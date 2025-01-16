@@ -1,8 +1,12 @@
 package maple.trickster_endec.fragment;
 
-public record DimensionFragment(RegistryKey<World> world) implements Fragment {
+import io.wispforest.endec.StructEndec;
+import io.wispforest.endec.impl.StructEndecBuilder;
+import maple.trickster_endec.Identifier;
+
+public record DimensionFragment(String world) implements Fragment {
     public static StructEndec<DimensionFragment> ENDEC = StructEndecBuilder.of(
-            CodecUtils.toEndec(RegistryKey.createCodec(RegistryKeys.WORLD)).fieldOf("world", DimensionFragment::world),
+            Identifier.ENDEC.xmap(Identifier::toString, Identifier::of).fieldOf("world", DimensionFragment::world),
             DimensionFragment::new
     );
 
@@ -11,23 +15,4 @@ public record DimensionFragment(RegistryKey<World> world) implements Fragment {
         return FragmentType.DIMENSION;
     }
 
-    @SuppressWarnings("deprecation")
-    @Override
-    public Text asText() {
-        return Text.literal(WordUtils.capitalize(world.getValue().getPath().replace('_', ' ')));
-    }
-
-    @Override
-    public boolean asBoolean() {
-        return true;
-    }
-
-    @Override
-    public int getWeight() {
-        return 16;
-    }
-
-    public static DimensionFragment of(World world) {
-        return new DimensionFragment(world.getRegistryKey());
-    }
 }
