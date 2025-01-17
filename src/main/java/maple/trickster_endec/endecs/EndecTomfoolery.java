@@ -6,6 +6,9 @@ import com.mojang.datafixers.util.Either;
 import com.mojang.datafixers.util.Function3;
 import io.wispforest.endec.*;
 import io.wispforest.endec.impl.StructEndecBuilder;
+import org.teavm.jso.JSExport;
+import org.teavm.jso.JSObject;
+import org.teavm.jso.JSProperty;
 
 import java.util.*;
 import java.util.function.Function;
@@ -29,7 +32,21 @@ public class EndecTomfoolery {
         }
     }
 
-    public record Vector<T extends Number>(T x, T y, T z) {}
+
+    public record Vector<T extends Number>(
+            @JSExport @JSProperty T x,
+            @JSExport @JSProperty T y,
+            @JSExport @JSProperty T z)
+            implements JSObject {
+
+        @Override
+        public String toString() {
+            return "Vector[" +
+                    "x=" + x + ", " +
+                    "y=" + y + ", " +
+                    "z=" + z + ']';
+        }
+    }
 
 
     public static final Endec<Vector<Integer>> ALWAYS_READABLE_BLOCK_POS =

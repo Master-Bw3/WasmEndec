@@ -3,13 +3,14 @@ package maple.trickster_endec.fragment;
 import io.wispforest.endec.Endec;
 import io.wispforest.endec.StructEndec;
 import io.wispforest.endec.impl.StructEndecBuilder;
+import org.teavm.jso.JSExport;
+import org.teavm.jso.JSProperty;
 
-import java.io.UncheckedIOException;
 import java.util.Objects;
 
 public final class NumberFragment implements Fragment {
     public static final StructEndec<NumberFragment> ENDEC = StructEndecBuilder.of(
-            Endec.DOUBLE.fieldOf("number", NumberFragment::number),
+            Endec.DOUBLE.fieldOf("number", NumberFragment::getNumber),
             NumberFragment::new
     );
 
@@ -32,7 +33,9 @@ public final class NumberFragment implements Fragment {
         return obj instanceof NumberFragment n && n.number == number;
     }
 
-    public double number() {
+    @JSExport
+    @JSProperty
+    public double getNumber() {
         return number;
     }
 

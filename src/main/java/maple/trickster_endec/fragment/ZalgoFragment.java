@@ -2,6 +2,8 @@ package maple.trickster_endec.fragment;
 
 import io.wispforest.endec.StructEndec;
 import maple.trickster_endec.endecs.EndecTomfoolery;
+import org.teavm.jso.JSExport;
+import org.teavm.jso.JSMethod;
 
 import java.util.List;
 import java.util.Random;
@@ -18,6 +20,10 @@ public record ZalgoFragment(int index) implements Fragment {
     public ZalgoFragment() {
         this(RANDOM.nextInt(SILLIES.size()));
     }
+
+    @JSExport
+    @JSMethod
+    public void noop() {}
 
     @Override
     public FragmentType<?> type() {

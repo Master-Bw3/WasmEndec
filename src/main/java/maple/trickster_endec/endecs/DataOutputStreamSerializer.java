@@ -106,7 +106,9 @@ public class DataOutputStreamSerializer<B extends DataOutputStream> implements S
 
     @Override
     public void writeString(SerializationContext ctx, String value) {
-        this.writeVarInt(ctx, ByteBufUtil.utf8Bytes(value));
+        byte[] utf8Bytes = value.getBytes(StandardCharsets.UTF_8);
+
+        this.writeVarInt(ctx, utf8Bytes.length);
 
         byte[] bytes = value.getBytes(StandardCharsets.UTF_8);
         try {
