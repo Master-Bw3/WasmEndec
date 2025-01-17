@@ -33,11 +33,24 @@ public class EndecTomfoolery {
     }
 
 
-    public record Vector<T extends Number>(
-            @JSExport @JSProperty T x,
-            @JSExport @JSProperty T y,
-            @JSExport @JSProperty T z)
-            implements JSObject {
+    public record Vector(
+            @JSExport @JSProperty double x,
+            @JSExport @JSProperty double y,
+            @JSExport @JSProperty double z) {
+
+        @Override
+        public String toString() {
+            return "Vector[" +
+                    "x=" + x + ", " +
+                    "y=" + y + ", " +
+                    "z=" + z + ']';
+        }
+    }
+
+    public record VectorI(
+            @JSExport @JSProperty int x,
+            @JSExport @JSProperty int y,
+            @JSExport @JSProperty int z) {
 
         @Override
         public String toString() {
@@ -49,14 +62,13 @@ public class EndecTomfoolery {
     }
 
 
-    public static final Endec<Vector<Integer>> ALWAYS_READABLE_BLOCK_POS =
-            vectorEndec(Endec.INT, Vector::new, Vector::x, Vector::y, Vector::z);
+    public static final Endec<VectorI> ALWAYS_READABLE_BLOCK_POS =
+            vectorEndec(Endec.INT, VectorI::new, VectorI::x, VectorI::y, VectorI::z);
 
     public static final Endec<UUID> UUID = Endec.STRING.xmap(UndashedUuid::fromStringLenient, java.util.UUID::toString);
     public static final SerializationAttribute.Marker UBER_COMPACT_ATTRIBUTE = SerializationAttribute.marker("uber_compact");
     public static final SerializationAttribute.WithValue<Byte> PROTOCOL_VERSION_ATTRIBUTE = SerializationAttribute.withValue("protocol_version");
-    public static Endec<Vector<Double>> VECTOR_3D_ENDEC = EndecTomfoolery.<Double, Vector<Double>>vectorEndec(Endec.DOUBLE, Vector::new, Vector::x, Vector::y, Vector::z);
-    public static Endec<Vector<Float>> VECTOR_3F_ENDEC = EndecTomfoolery.<Float, Vector<Float>>vectorEndec(Endec.FLOAT, Vector::new, Vector::x, Vector::y, Vector::z);
+    public static Endec<Vector> VECTOR_3D_ENDEC = EndecTomfoolery.<Double, Vector>vectorEndec(Endec.DOUBLE, Vector::new, Vector::x, Vector::y, Vector::z);
     public static final SerializationAttribute.Marker CODEC_SAFE = SerializationAttribute.marker("codec_safe");
 
     public static <C, V> Endec<V> vectorEndec(Endec<C> componentEndec, Function3<C, C, C, V> constructor, Function<V, C> xGetter, Function<V, C> yGetter, Function<V, C> zGetter) {

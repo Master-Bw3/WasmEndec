@@ -8,7 +8,7 @@ import org.teavm.jso.JSProperty;
 
 public class BooleanFragment implements Fragment {
     public static final StructEndec<BooleanFragment> ENDEC = StructEndecBuilder.of(
-            Endec.BOOLEAN.fieldOf("bool", BooleanFragment::getBoolean),
+            Endec.BOOLEAN.fieldOf("bool", BooleanFragment::isBool),
             BooleanFragment::of
     );
     public static final BooleanFragment TRUE = new BooleanFragment(true);
@@ -27,7 +27,7 @@ public class BooleanFragment implements Fragment {
 
     @JSExport
     @JSProperty
-    public boolean getBoolean() {
+    public boolean isBool() {
         return bool;
     }
 

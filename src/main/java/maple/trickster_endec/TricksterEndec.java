@@ -1,7 +1,7 @@
 package maple.trickster_endec;
 
 
-import maple.trickster_endec.endecs.JSONSerializer;
+import maple.trickster_endec.endecs.EndecTomfoolery;
 import maple.trickster_endec.fragment.*;
 import org.teavm.jso.JSExport;
 import org.teavm.jso.JSExportClasses;
@@ -26,11 +26,12 @@ import org.teavm.jso.JSExportClasses;
         VectorFragment.class,
         VoidFragment.class,
         ZalgoFragment.class,
-        Pattern.PatternEntry.class
+        Pattern.PatternEntry.class,
+        EndecTomfoolery.Vector.class
 })
 public class TricksterEndec {
     public static void main(String[] args) {
-        var part = SpellPart.fromBase64("YwqT9+ZnYGBgYGTMYWBgYGaEsBlhwqNio2JDUWwDR0MrAwMDE1hsmJEAVqVUkLQDAAA=");
+        var part = SpellPart.fromBase64("Y2qtebdTtKQoMzm7uCS1yCo1rySzpDK+pLIglQEAc/+CKhwAAAA=");
 
         System.out.println(part.toBase64());
     }

@@ -11,15 +11,15 @@ import java.util.Objects;
 
 public class VectorFragment implements Fragment {
     public static final StructEndec<VectorFragment> ENDEC = StructEndecBuilder.of(
-            EndecTomfoolery.<Double, EndecTomfoolery.Vector<Double>>vectorEndec(Endec.DOUBLE, EndecTomfoolery.Vector<Double>::new, EndecTomfoolery.Vector<Double>::x, EndecTomfoolery.Vector<Double>::y, EndecTomfoolery.Vector<Double>::z)
+            EndecTomfoolery.<Double, EndecTomfoolery.Vector>vectorEndec(Endec.DOUBLE, EndecTomfoolery.Vector::new, EndecTomfoolery.Vector::x, EndecTomfoolery.Vector::y, EndecTomfoolery.Vector::z)
                     .fieldOf("vector", VectorFragment::getVector),
             VectorFragment::new
     );
-    public static final VectorFragment ZERO = new VectorFragment(new EndecTomfoolery.Vector<Double>(0d, 0d, 0d));
+    public static final VectorFragment ZERO = new VectorFragment(new EndecTomfoolery.Vector(0d, 0d, 0d));
 
-    private final EndecTomfoolery.Vector<Double> vector;
+    private final EndecTomfoolery.Vector vector;
 
-    public VectorFragment(EndecTomfoolery.Vector<Double> vector) throws RuntimeException {
+    public VectorFragment(EndecTomfoolery.Vector vector) throws RuntimeException {
         if (Double.isNaN(vector.x()) || Double.isNaN(vector.y()) || Double.isNaN(vector.z())) {
             throw new RuntimeException();
         }
@@ -29,7 +29,7 @@ public class VectorFragment implements Fragment {
 
     @JSExport
     @JSProperty
-    public EndecTomfoolery.Vector<Double> getVector() {
+    public EndecTomfoolery.Vector getVector() {
         return vector;
     }
 

@@ -72,7 +72,7 @@ public class ByteBufferDeserializer implements Deserializer<ByteBuffer> {
 
     @Override
     public boolean readBoolean(SerializationContext ctx) {
-        return this.buffer.get() == 1;
+        return this.buffer.get() != (byte) 0;
     }
 
     @Override

@@ -35,6 +35,13 @@ public class Identifier {
         return 31 * this.namespace.hashCode() + this.path.hashCode();
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Identifier other) {
+            return this.namespace.equals(other.namespace) && this.path.equals(other.path);
+        } else return false;
+    }
+
     public String toString() {
         return this.namespace + ":" + this.path;
     }
