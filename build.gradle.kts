@@ -44,11 +44,17 @@ teavm {
         targetFileName = "endec.js"
 
         moduleType = JSModuleType.ES2015
+
+        obfuscated = false
+
     }
     wasmGC {
         addedToWebApp = true
 
         // this is also optional, default value is <project name>.wasm
         targetFileName = "endec.wasm"
+
+        obfuscated = false
+
     }
 }
