@@ -3,8 +3,7 @@ package maple.trickster_endec.fragment;
 import io.wispforest.endec.Endec;
 import io.wispforest.endec.StructEndec;
 import io.wispforest.endec.impl.StructEndecBuilder;
-import org.teavm.jso.JSExport;
-import org.teavm.jso.JSProperty;
+
 
 import java.util.Objects;
 
@@ -33,8 +32,8 @@ public final class NumberFragment implements Fragment {
         return obj instanceof NumberFragment n && n.number == number;
     }
 
-    @JSExport
-    @JSProperty
+
+
     public double getNumber() {
         return number;
     }

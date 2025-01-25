@@ -1,9 +1,5 @@
-import org.teavm.gradle.api.JSModuleType
-
 plugins {
     id("java")
-    id("war")
-    id("org.teavm") version "0.11.0"
 }
 
 group = "org.example"
@@ -27,34 +23,7 @@ dependencies {
     implementation("io.netty:netty-all:4.1.24.Final")
     implementation("org.apache.commons:commons-lang3:3.17.0")
     implementation("it.unimi.dsi:fastutil:8.5.15")
-    implementation("org.teavm.flavour:teavm-flavour-json:0.2.1")
 
 
 
-}
-
-teavm {
-    all {
-        mainClass = "maple.trickster_endec.TricksterEndec"
-    }
-    js {
-        addedToWebApp = true
-
-        // this is also optional, default value is <project name>.js
-        targetFileName = "endec.js"
-
-        moduleType = JSModuleType.ES2015
-
-        obfuscated = false
-
-    }
-    wasmGC {
-        addedToWebApp = true
-
-        // this is also optional, default value is <project name>.wasm
-        targetFileName = "endec.wasm"
-
-        obfuscated = false
-
-    }
 }

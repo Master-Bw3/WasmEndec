@@ -4,8 +4,7 @@ import io.wispforest.endec.Endec;
 import io.wispforest.endec.StructEndec;
 import io.wispforest.endec.impl.StructEndecBuilder;
 import maple.trickster_endec.endecs.EndecTomfoolery;
-import org.teavm.jso.JSExport;
-import org.teavm.jso.JSProperty;
+
 
 import java.util.Objects;
 
@@ -27,8 +26,8 @@ public class VectorFragment implements Fragment {
         this.vector = vector;
     }
 
-    @JSExport
-    @JSProperty
+
+
     public EndecTomfoolery.Vector getVector() {
         return vector;
     }

@@ -6,9 +6,6 @@ import com.mojang.datafixers.util.Either;
 import com.mojang.datafixers.util.Function3;
 import io.wispforest.endec.*;
 import io.wispforest.endec.impl.StructEndecBuilder;
-import org.teavm.jso.JSExport;
-import org.teavm.jso.JSObject;
-import org.teavm.jso.JSProperty;
 
 import java.util.*;
 import java.util.function.Function;
@@ -34,9 +31,9 @@ public class EndecTomfoolery {
 
 
     public record Vector(
-            @JSExport @JSProperty double x,
-            @JSExport @JSProperty double y,
-            @JSExport @JSProperty double z) {
+              double x,
+              double y,
+              double z) {
 
         @Override
         public String toString() {
@@ -48,9 +45,9 @@ public class EndecTomfoolery {
     }
 
     public record VectorI(
-            @JSExport @JSProperty int x,
-            @JSExport @JSProperty int y,
-            @JSExport @JSProperty int z) {
+              int x,
+              int y,
+              int z) {
 
         @Override
         public String toString() {

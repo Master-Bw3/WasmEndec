@@ -3,8 +3,7 @@ package maple.trickster_endec.fragment;
 import io.wispforest.endec.Endec;
 import io.wispforest.endec.StructEndec;
 import io.wispforest.endec.impl.StructEndecBuilder;
-import org.teavm.jso.JSExport;
-import org.teavm.jso.JSProperty;
+
 
 public class BooleanFragment implements Fragment {
     public static final StructEndec<BooleanFragment> ENDEC = StructEndecBuilder.of(
@@ -25,8 +24,8 @@ public class BooleanFragment implements Fragment {
         return FragmentType.BOOLEAN;
     }
 
-    @JSExport
-    @JSProperty
+
+
     public boolean isBool() {
         return bool;
     }
